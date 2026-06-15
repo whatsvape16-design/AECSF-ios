@@ -28,8 +28,10 @@ bash scripts/build_ios.sh archive     # 真机 IPA
 Configuration file 填：
 
 ```
-ios/codemagic.yaml
+codemagic.yaml
 ```
+
+（仓库根目录，与 `DiyaVape.xcodeproj` 同级）
 
 ## 同步说明
 

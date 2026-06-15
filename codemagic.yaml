@@ -1,5 +1,5 @@
-# Codemagic — Diya Vape iOS 云端构建（独立目录 ios/）
-# 在 Codemagic 项目设置中将 Configuration file 指向：ios/codemagic.yaml
+# Codemagic — Diya Vape iOS 云端构建（AECSF-ios 独立仓库，根目录即项目根）
+# Configuration file: codemagic.yaml
 
 workflows:
   diya-vape-ios-adhoc:
@@ -12,7 +12,6 @@ workflows:
         distribution_type: ad_hoc
         bundle_identifier: shop.diyavape.app
       vars:
-        IOS_DIR: ios
         XCODE_SCHEME: DiyaVape
         BUNDLE_ID: shop.diyavape.app
 
@@ -22,10 +21,6 @@ workflows:
       branch_patterns:
         - pattern: main
           include: true
-        - pattern: "release/*"
-          include: true
-      paths:
-        - ios/**
 
     scripts:
       - name: Configure code signing
@@ -35,18 +30,18 @@ workflows:
         script: pip3 install Pillow
 
       - name: Generate iOS icons
-        script: python3 $CM_BUILD_DIR/$IOS_DIR/scripts/prepare_ios_icons.py
+        script: python3 $CM_BUILD_DIR/scripts/prepare_ios_icons.py
 
       - name: Build IPA
         script: |
-          cd $CM_BUILD_DIR/$IOS_DIR
+          cd $CM_BUILD_DIR
           xcode-project build-ipa \
             --project DiyaVape.xcodeproj \
             --scheme $XCODE_SCHEME
 
     artifacts:
-      - ios/build/ios/ipa/*.ipa
-      - ios/build/**/DiyaVape.app
+      - build/ios/ipa/*.ipa
+      - build/**/DiyaVape.app
 
     publishing:
       email:
@@ -63,28 +58,25 @@ workflows:
 
     environment:
       vars:
-        IOS_DIR: ios
         XCODE_SCHEME: DiyaVape
 
     triggering:
       events:
-        - pull_request
+        - push
       branch_patterns:
-        - pattern: "*"
+        - pattern: main
           include: true
-      paths:
-        - ios/**
 
     scripts:
       - name: Install icon dependencies
         script: pip3 install Pillow
 
       - name: Generate iOS icons
-        script: python3 $CM_BUILD_DIR/$IOS_DIR/scripts/prepare_ios_icons.py
+        script: python3 $CM_BUILD_DIR/scripts/prepare_ios_icons.py
 
       - name: Simulator build
         script: |
-          cd $CM_BUILD_DIR/$IOS_DIR
+          cd $CM_BUILD_DIR
           xcodebuild \
             -project DiyaVape.xcodeproj \
             -scheme $XCODE_SCHEME \
@@ -94,4 +86,4 @@ workflows:
             build
 
     artifacts:
-      - ios/output/DerivedData/Build/Products/Debug-iphonesimulator/DiyaVape.app
+      - output/DerivedData/Build/Products/Debug-iphonesimulator/DiyaVape.app
