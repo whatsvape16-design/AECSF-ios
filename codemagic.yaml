@@ -1,5 +1,6 @@
 # Codemagic — Diya Vape iOS 云端构建（AECSF-ios 独立仓库，根目录即项目根）
 # Configuration file: codemagic.yaml
+# version: 2 (no triggering.paths — reload from GitHub if editor shows old yaml)
 
 workflows:
   diya-vape-ios-adhoc:
