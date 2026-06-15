@@ -47,7 +47,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - $CM_BUILD_AUTHOR_EMAIL
+          - whatsvape16@gmail.com
         notify:
           success: true
           failure: true
